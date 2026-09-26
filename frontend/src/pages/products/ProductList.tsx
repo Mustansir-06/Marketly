@@ -19,8 +19,7 @@ const ProductList = () => {
   const getAllProducts=async()=>{
     try {
       const res=await api.get("/api/products/",{
-        params:{search,sortBy,order,page,limit:1}
-        
+        params:{search,sortBy,order,page,limit:10}
       })
       setProducts(res.data.products)
       setPagination(res.data.pagination) 

@@ -8,17 +8,21 @@ interface RegisterForm {
   name: string
   email: string
   password: string
+  confirmPassword: string
 }
 
 const Register = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<RegisterForm>()
   const navigate = useNavigate()
   const [serverError, setServerError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const password = watch("password")
 
   const onSubmit = async (data: RegisterForm) => {
     setServerError(null)
@@ -96,6 +100,22 @@ const Register = () => {
             />
             {errors.password && (
               <p className="mt-1.5 text-xs text-red-600">{errors.password.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-[#1d2925]">Confirm password</label>
+            <input
+              type="password"
+              {...register("confirmPassword", {
+                required: "Please confirm your password",
+                validate: (value) => value === password || "Passwords do not match",
+              })}
+              placeholder="Re-enter your password"
+              className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-stone-400 focus:border-[#183c32] focus:ring-2 focus:ring-[#183c32]/10"
+            />
+            {errors.confirmPassword && (
+              <p className="mt-1.5 text-xs text-red-600">{errors.confirmPassword.message}</p>
             )}
           </div>
 

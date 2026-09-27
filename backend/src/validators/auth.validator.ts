@@ -17,6 +17,15 @@ export const registerValidator = [
     .isLength({ min: 6 }).withMessage("Password must be at least 6 characters").bail()
     .matches(/\d/).withMessage("Password must contain at least one number").bail()
     .matches(/[a-zA-Z]/).withMessage("Password must contain at least one letter"),
+
+  body("confirmPassword")
+    .notEmpty().withMessage("Please confirm your password").bail()
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error("Passwords do not match");
+      }
+      return true;
+    }),
 ];
 
 export const loginValidator = [
